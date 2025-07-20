@@ -83,6 +83,14 @@
     align-items: center;
     text-align: center;
     z-index: 10;
+    transform: scale(0.5);
+    opacity: 0;
+    transition: transform 0.5s ease, opacity 0.5s ease;
+  }
+  #card.show {
+    display: flex;
+    transform: scale(1);
+    opacity: 1;
   }
 
   #card p {
@@ -110,7 +118,7 @@
 </head>
 <body>
 
-<button id="btnShow">Para Laura, minha melhor amiga</button>
+<button id="btnShow">Para Laura, minha melhor amiga 🫶🏻</button>
 
 <div id="card" role="region" aria-live="polite" aria-atomic="true">
   <p>
@@ -144,18 +152,21 @@
   };
   setInterval(createHeart, 300);
 
-  // Mostrar card ao clicar no botão
+  // Mostrar card com animação ao clicar no botão
   const btn = document.getElementById('btnShow');
   const card = document.getElementById('card');
 
   btn.addEventListener('click', () => {
     btn.style.display = 'none';
     card.style.display = 'flex';
+
+    // Forçar o reflow para a transição funcionar
+    card.offsetWidth;
+    card.classList.add('show');
   });
 
   // Cronômetro
-  // Data inicial: Fevereiro de 2023 (vamos usar 1 de fevereiro 00:00)
-  const startDate = new Date(2023, 1, 1, 0, 0, 0); // mês 1 = fevereiro (0 indexado)
+  const startDate = new Date(2023, 1, 1, 0, 0, 0);
 
   const timerEl = document.getElementById('timer');
 
