@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Para Laura, minha melhor amiga</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Comic+Neue:wght@700&display=swap');
+  body {
+    margin: 0;
+    height: 100vh;
+    background: #000000;
+    overflow: hidden;
+    font-family: 'Comic Neue', cursive, sans-serif;
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+  }
+  /* Corações caindo */
+  .heart {
+    position: fixed;
+    top: -50px;
+    width: 15px;
+    height: 15px;
+    background: white;
+    opacity: 0.8;
+    transform: rotate(45deg);
+    animation: fall linear forwards;
+    z-index: 1;
+  }
+  .heart:before,
+  .heart:after {
+    content: "";
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    background: white;
+    border-radius: 50%;
+  }
+  .heart:before {
+    top: -7.5px;
+    left: 0;
+  }
+  .heart:after {
+    left: 7.5px;
+    top: 0;
+  }
+  @keyframes fall {
+    to {
+      transform: translateY(110vh) rotate(45deg);
+      opacity: 0;
+    }
+  }
+
+  /* Botão inicial */
+  #btnShow {
+    font-size: 1.8rem;
+    padding: 1rem 2rem;
+    background: #4b0082; /* roxo escuro */
+    border: none;
+    border-radius: 10px;
+    color: white;
+    cursor: pointer;
+    box-shadow: 0 0 8px #7a33b1;
+    transition: background 0.3s ease;
+    z-index: 10;
+  }
+  #btnShow:hover {
+    background: #7a33b1;
+  }
+
+  /* Card do texto */
+  #card {
+    background: #2e005f; /* roxo escuro */
+    border-radius: 20px;
+    padding: 2rem 2.5rem;
+    max-width: 420px;
+    box-shadow: 0 0 15px #7a33b1aa;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    z-index: 10;
+  }
+
+  #card p {
+    font-size: 1.1rem;
+    line-height: 1.6;
+    margin-bottom: 1.4rem;
+  }
+
+  #card .signature {
+    font-weight: 700;
+    margin-top: 1.6rem;
+    font-size: 1.2rem;
+  }
+
+  /* Cronômetro */
+  #timer {
+    margin-top: 1.8rem;
+    font-size: 2.4rem;
+    font-weight: 700;
+    font-family: 'Comic Neue', cursive, sans-serif;
+    color: white;
+    user-select: none;
+  }
+</style>
+</head>
+<body>
+
+<button id="btnShow">Para Laura, minha melhor amiga</button>
+
+<div id="card" role="region" aria-live="polite" aria-atomic="true">
+  <p>
+    Laura… tá vendo isso aqui?<br><br>
+
+    Eu fiquei afastado por um bom tempo, e você sabe o motivo… eu me afastei por causa da Pietra. Infelizmente eu deixei isso me cegar e deixei de dar valor pra quem realmente sempre esteve comigo.<br><br>
+
+    Não importa o quanto o tempo passou, a verdade é que eu senti falta da nossa amizade, das nossas conversas, das nossas besteiras.<br><br>
+
+    Obrigado por ainda estar aqui mesmo depois de tudo. Eu voltei. Voltei pra te encher o saco como sempre.
+  </p>
+
+  <div id="timer">Carregando...</div>
+
+  <div class="signature">— Vini 💜</div>
+</div>
+
+<script>
+  // Corações caindo
+  const createHeart = () => {
+    const heart = document.createElement('div');
+    heart.classList.add('heart');
+    heart.style.left = Math.random() * 100 + 'vw';
+    heart.style.animationDuration = (5 + Math.random() * 7) + 's';
+    heart.style.opacity = (0.3 + Math.random() * 0.7);
+    document.body.appendChild(heart);
+
+    setTimeout(() => {
+      heart.remove();
+    }, 12000);
+  };
+  setInterval(createHeart, 300);
+
+  // Mostrar card ao clicar no botão
+  const btn = document.getElementById('btnShow');
+  const card = document.getElementById('card');
+
+  btn.addEventListener('click', () => {
+    btn.style.display = 'none';
+    card.style.display = 'flex';
+  });
+
+  // Cronômetro
+  // Data inicial: Fevereiro de 2023 (vamos usar 1 de fevereiro 00:00)
+  const startDate = new Date(2023, 1, 1, 0, 0, 0); // mês 1 = fevereiro (0 indexado)
+
+  const timerEl = document.getElementById('timer');
+
+  function updateTimer() {
+    const now = new Date();
+    let diff = now - startDate;
+
+    if (diff < 0) {
+      timerEl.textContent = "0 dias 0h 0m";
+      return;
+    }
+
+    const msInMinute = 1000 * 60;
+    const msInHour = msInMinute * 60;
+    const msInDay = msInHour * 24;
+
+    const days = Math.floor(diff / msInDay);
+    diff = diff % msInDay;
+    const hours = Math.floor(diff / msInHour);
+    diff = diff % msInHour;
+    const minutes = Math.floor(diff / msInMinute);
+
+    timerEl.textContent = `${days} dias ${hours}h ${minutes}m`;
+  }
+
+  updateTimer();
+  setInterval(updateTimer, 60000);
+</script>
+
+</body>
+</html>
